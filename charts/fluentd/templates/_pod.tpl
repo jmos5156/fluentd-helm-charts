@@ -34,8 +34,6 @@ containers:
       exec /fluentd/entrypoint.sh
   {{- end }}
     env:
-    - name: FLUENTD_CONF
-      value: "../../../etc/fluent/fluent.conf"
     {{- if .Values.env }}
     {{- toYaml .Values.env | nindent 4 }}
     {{- end }}
@@ -63,10 +61,14 @@ containers:
     resources:
       {{- toYaml .Values.resources | nindent 8 }}
     volumeMounts:
+    {{- if .Values.mainConfigMapName }}
     - name: etcfluentd-main
       mountPath: /etc/fluent
+    {{- end }}
+    {{- if .Values.extraFilesConfigMapName }}
     - name: etcfluentd-config
       mountPath: /etc/fluent/config.d/
+    {{- end }}
     {{- if .Values.mountVarLogDirectory }}
     - name: varlog
       mountPath: /var/log
@@ -88,14 +90,18 @@ containers:
       name: {{ include "fluentd.fullname" . }}-buffer
     {{- end }}
 volumes:
+{{- if .Values.mainConfigMapName }}
 - name: etcfluentd-main
   configMap:
-    name: {{ include "fluentd.mainConfigMapName" . }}
+    name: {{ .Values.mainConfigMapName }}
     defaultMode: 0777
+{{- end }}
+{{- if .Values.extraFilesConfigMapName }}
 - name: etcfluentd-config
   configMap:
-    name: {{ include "fluentd.extraFilesConfigMapName" . }}
+    name: {{ .Values.extraFilesConfigMapName }}
     defaultMode: 0777
+{{- end }}
 {{- if .Values.mountVarLogDirectory }}
 - name: varlog
   hostPath:
