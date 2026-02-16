@@ -175,11 +175,11 @@ envFrom: []
 initContainers: []
 
 ## Name of the configMap containing a custom fluentd.conf configuration file to use instead of the default.
-# mainConfigMapNameOverride: ""
+mainConfigMapName: ""
 
 ## Name of the configMap containing files to be placed under /etc/fluent/config.d/
 ## NOTE: This will replace ALL default files in the aforementioned path!
-# extraFilesConfigMapNameOverride: ""
+extraFilesConfigMapName: ""
 
 mountVarLogDirectory: true
 mountDockerContainersDirectory: true
