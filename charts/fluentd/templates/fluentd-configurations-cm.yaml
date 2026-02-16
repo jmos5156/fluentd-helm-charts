@@ -1,4 +1,4 @@
-{{- if not .Values.extraFilesConfigMapNameOverride }}
+{{- if not .Values.extraFilesConfigMapName and .Values.fileConfigs }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -13,7 +13,7 @@ data:
 {{- end }}
 {{- end }}
 
-{{- if not .Values.mainConfigMapNameOverride }}
+{{- if not .Values.mainConfigMapName and .Values.configMapConfigs }}
 ---
 apiVersion: v1
 kind: ConfigMap
